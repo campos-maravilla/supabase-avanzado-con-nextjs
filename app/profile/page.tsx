@@ -35,7 +35,7 @@ export default function ProfilePage() {
 
         // Buscar perfil en la tabla profiles
         const { data: profileData, error: profileError } = await supabase
-          .from("profile")
+          .from("profiles")
           .select("*")
           .eq("id", user.id)
           .single();

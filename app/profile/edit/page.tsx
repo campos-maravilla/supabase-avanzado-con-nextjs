@@ -54,7 +54,7 @@ export default function EditProfilePage() {
     currentUserId: string,
   ): Promise<boolean> => {
     const { data, error } = await supabase
-      .from("profile")
+      .from("profiles")
       .select("username")
       .eq("username", newUsername)
       .neq("id", currentUserId)
@@ -81,7 +81,7 @@ export default function EditProfilePage() {
 
         // Buscar perfil existente
         const { data: profileData, error: profileError } = await supabase
-          .from("profile")
+          .from("profiles")
           .select("*")
           .eq("id", user.id)
           .single();
@@ -181,7 +181,7 @@ export default function EditProfilePage() {
       }
 
       // Upsert en profiles (insert o update)
-      const { error: upsertError } = await supabase.from("profile").upsert({
+      const { error: upsertError } = await supabase.from("profiles").upsert({
         id: profile.id,
         username,
         avatar_url: avatarUrl,
@@ -217,7 +217,7 @@ export default function EditProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background mt-15">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">

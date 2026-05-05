@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { Post, Comment } from "./types";
 import { supabase } from "./lib/client";
 import { PostCard } from "./components/PostCard";
+import { NotificationBell } from "./components/NotificationBell";
+import BottomNav from "./components/BottomNav";
 
 export default function Home() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -60,6 +62,18 @@ export default function Home() {
               : p,
           ),
         );
+
+        // Crear notificación via Edge Function
+        if (post.user_id !== currentUserId) {
+          supabase.functions.invoke("send-notification", {
+            body: {
+              type: "like",
+              post_id: postId,
+              actor_id: currentUserId,
+              post_owner_id: post.user_id,
+            },
+          });
+        }
       }
     }
   };
@@ -97,6 +111,32 @@ export default function Home() {
             : p,
         ),
       );
+
+      // Notificar al titular del post (si no es el mismo usuario)
+      if (post.user_id !== currentUserId) {
+        // Crear notificación via Edge Function
+        supabase.functions.invoke("send-notification", {
+          body: {
+            type: "comment",
+            post_id: postId,
+            actor_id: currentUserId,
+            post_owner_id: post.user_id,
+            comment_body: body,
+          },
+        });
+        // Enviar email
+        fetch("/api/send-comment-email", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            postOwnerId: post.user_id,
+            ownerUsername: post.profile?.username || "Usuario",
+            commenterUsername: commenterProfile?.username || "Alguien",
+            commentBody: body,
+            postCaption: post.caption,
+          }),
+        }).catch((err) => console.error("Error enviando email:", err));
+      }
     }
   };
 
@@ -106,6 +146,10 @@ export default function Home() {
         .from("posts_new")
         .select("*")
         .order("created_at", { ascending: false });
+
+      await supabase.from("notifications").insert({
+        post_id: postsData.id, // ✅ ahora sí existe
+      });
 
       if (postsError) {
         console.error("Error al obtener los posts:", postsError);
@@ -203,11 +247,13 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-card-bg border-b border-border">
+
+      <header className="sticky  left-0 right-0 z-50 bg-card-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-center">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             Suplatzigram
           </h1>
+          <NotificationBell />
         </div>
       </header>
 

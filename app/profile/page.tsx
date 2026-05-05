@@ -86,16 +86,16 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background mt-15">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
             Mi Perfil
           </h1>
           <Link
             href="/profile/edit"
-            className="text-sm text-primary hover:underline"
+            className="text-xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent"
           >
             Editar
           </Link>

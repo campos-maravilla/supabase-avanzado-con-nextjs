@@ -26,7 +26,7 @@ export function PostCard({
   };
 
   return (
-    <article className="bg-card-bg border border-border rounded-xl overflow-hidden shadow-sm mt-10">
+    <article className="bg-card-bg border border-border rounded-xl overflow-hidden shadow-sm mt-10 ">
       {/* Header con usuario y avatar */}
       <div className="flex items-center gap-3 p-4">
         <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary">
@@ -49,11 +49,12 @@ export function PostCard({
       </div>
 
       {/* Imagen del post */}
-      <div className="relative w-full aspect-square">
+      <div className="relative  ">
         <Image
-          src={post.image_url}
+          src={post.image_url.trim() || "/placeholder.png"}
+          width={800}
+          height={100}
           alt={`Post de ${username}`}
-          fill
           className="object-cover"
         />
       </div>

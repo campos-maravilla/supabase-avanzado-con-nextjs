@@ -104,9 +104,9 @@ export default function LoginPage() {
         </form>
 
         {/* Link a registro */}
-        <p className="text-center text-foreground/60 mt-6">
+        <p className="text-center text-white/80 mt-6">
           ¿No tienes cuenta?{" "}
-          <Link href="/auth/register" className="text-primary hover:underline">
+          <Link href="/auth/register" className="text-white/80hover:underline">
             Regístrate
           </Link>
         </p>

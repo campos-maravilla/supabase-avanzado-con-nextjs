@@ -250,7 +250,7 @@ export default function Home() {
 
       <header className="sticky  left-0 right-0 z-50 bg-card-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-center">
-          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-2xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
             Suplatzigram
           </h1>
           <NotificationBell />
@@ -258,7 +258,7 @@ export default function Home() {
       </header>
 
       {/* Feed de posts */}
-      <main className="max-w-lg mx-auto px-4 py-6">
+      <main className=" mx-auto w-2/6   px-4 py-6 ">
         <div className="flex flex-col gap-6">
           {posts.map((post) => (
             <PostCard

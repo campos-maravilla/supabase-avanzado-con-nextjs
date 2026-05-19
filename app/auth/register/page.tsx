@@ -6,14 +6,17 @@ import { supabase } from "../../lib/client";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
-    const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
 
-   const validateUsername = (value: string) => {
+  const validateUsername = (value: string) => {
     const regex = /^[a-zA-Z0-9_]+$/;
     if (!value) {
       return "El nombre de usuario es requerido";
@@ -30,13 +33,13 @@ export default function RegisterPage() {
     return "";
   };
 
-   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase();
     setUsername(value);
     setUsernameError(validateUsername(value));
   };
 
-   const checkUsernameAvailable = async (username: string): Promise<boolean> => {
+  const checkUsernameAvailable = async (username: string): Promise<boolean> => {
     const { data, error } = await supabase
       .from("users")
       .select("username")
@@ -60,7 +63,7 @@ export default function RegisterPage() {
       return;
     }
 
-      const usernameValidation = validateUsername(username);
+    const usernameValidation = validateUsername(username);
     if (usernameValidation) {
       setMessage({ type: "error", text: usernameValidation });
       setIsLoading(false);
@@ -69,7 +72,10 @@ export default function RegisterPage() {
 
     const isAvailable = await checkUsernameAvailable(username);
     if (!isAvailable) {
-      setMessage({ type: "error", text: "Este nombre de usuario ya está en uso" });
+      setMessage({
+        type: "error",
+        text: "Este nombre de usuario ya está en uso",
+      });
       setIsLoading(false);
       return;
     }
@@ -78,7 +84,7 @@ export default function RegisterPage() {
       const { error } = await supabase.auth.signUp({
         email,
         password,
-          options: {
+        options: {
           data: {
             username,
             role: "user",
@@ -88,12 +94,12 @@ export default function RegisterPage() {
 
       if (error) throw error;
 
-      setMessage({ 
-        type: "success", 
-        text: "¡Registro exitoso! Revisa tu correo para confirmar tu cuenta." 
+      setMessage({
+        type: "success",
+        text: "¡Registro exitoso! Revisa tu correo para confirmar tu cuenta.",
       });
       setEmail("");
-      setUsername("")
+      setUsername("");
       setPassword("");
       setConfirmPassword("");
     } catch (error) {
@@ -119,7 +125,6 @@ export default function RegisterPage() {
 
         {/* Formulario */}
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-
           <div className="flex flex-col gap-1">
             <input
               type="text"
@@ -182,16 +187,16 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-primary to-accent text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full py-3 px-4 rounded-xl bg-linear-to-r from-primary to-accent text-white font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isLoading ? "Registrando..." : "Registrarse"}
           </button>
         </form>
 
         {/* Link a login */}
-        <p className="text-center text-foreground/60 mt-6">
+        <p className="text-center text-white/80 hover:underline">
           ¿Ya tienes cuenta?{" "}
-          <Link href="/auth/login" className="text-primary hover:underline">
+          <Link href="/auth/login" className="text-white/80 hover:underline">
             Inicia sesión
           </Link>
         </p>

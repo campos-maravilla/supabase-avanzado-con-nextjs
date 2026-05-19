@@ -153,10 +153,10 @@ export default function CreatePage() {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center px-4">
         <div className="text-center">
-          <p className="text-foreground/60 mb-4">
+          <p className="mb-4 text-white/80">
             Debes iniciar sesión para crear posts
           </p>
-          <Link href="/auth/login" className="text-primary hover:underline">
+          <Link href="/auth/login" className="hover:underline text-white/80">
             Iniciar sesión
           </Link>
         </div>

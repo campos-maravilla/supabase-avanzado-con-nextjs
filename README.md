@@ -1,6 +1,6 @@
 # Suplatzigram Avanzada
 
-Repositorio del frontend para el **Curso de Supabase Avanzado de Platzi**. Una aplicación inspirada en Instagram construida con [Next.js](https://nextjs.org) y [Supabase](https://supabase.com) como backend.
+Repositorio del frontend para el \*_Blog_. Una aplicación inspirada en Instagram construida con [Next.js](https://nextjs.org) y [Supabase](https://supabase.com) como backend.
 
 ## Tecnologías
 

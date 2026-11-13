@@ -1,4 +1,4 @@
-# Suplatzigram Avanzada
+# Blog
 
 Repositorio del frontend para el \*_Blog_. Una aplicación inspirada en Instagram construida con [Next.js](https://nextjs.org) y [Supabase](https://supabase.com) como backend.
 

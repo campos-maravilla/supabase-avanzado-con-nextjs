@@ -251,7 +251,7 @@ export default function Home() {
       <header className="sticky  left-0 right-0 z-50 bg-card-bg border-b border-border">
         <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-center">
           <h1 className="text-2xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
-            Suplatzigram
+            Mi blog
           </h1>
           <NotificationBell />
         </div>

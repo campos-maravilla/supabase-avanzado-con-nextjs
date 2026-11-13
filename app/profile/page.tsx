@@ -123,7 +123,7 @@ export default function ProfilePage() {
 
           {/* Username */}
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-foreground">
+            <h2 className="text-2xl font-bold  text-white">
               @{profile?.username || "sin_usuario"}
             </h2>
           </div>
@@ -131,7 +131,7 @@ export default function ProfilePage() {
           {/* Botón editar */}
           <Link
             href="/profile/edit"
-            className="px-6 py-2 rounded-xl bg-gradient-to-r from-primary to-accent text-white font-semibold hover:opacity-90 transition-opacity"
+            className="px-6 py-2 rounded-xl bg-lineal-to-r from-primary to-accent text-white font-semibold hover:opacity-90 transition-opacity"
           >
             Editar perfil
           </Link>

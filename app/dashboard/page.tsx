@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/client";
+import Link from "next/link";
 
 interface Stats {
   users: number;
@@ -26,6 +27,8 @@ export default function DashboardPage() {
   });
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
+  const [userId, setUserId] = useState<string | null>(null);
 
   // Función para cargar estadísticas
   const fetchStats = async () => {
@@ -289,12 +292,50 @@ export default function DashboardPage() {
     }
   };
 
+  useEffect(() => {
+    const checkAuth = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (user) {
+        setUserId(user.id);
+      }
+      setIsCheckingAuth(false);
+    };
+
+    checkAuth();
+  }, []);
+
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-foreground/60">Cargando...</div>
+      </div>
+    );
+  }
+
+  if (!userId) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center px-4">
+        <div className="text-center">
+          <p className="mb-4 text-white/80">
+            Debes iniciar sesión para acceder al dashboard.
+          </p>
+          <Link href="/auth/login" className="hover:underline text-white/80">
+            Iniciar sesión
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-card-bg border-b border-border">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-xl font-bold bg-linear-to-r from-primary to-accent bg-clip-text text-transparent">
             Dashboard
           </h1>
           <div className="flex items-center gap-2">
@@ -313,11 +354,11 @@ export default function DashboardPage() {
               className="bg-card-bg border border-border rounded-xl p-6 relative overflow-hidden"
             >
               <div
-                className={`absolute inset-0 bg-gradient-to-br ${card.color} opacity-5`}
+                className={`absolute inset-0 bg-linear-to-br ${card.color} opacity-5`}
               ></div>
               <div className="relative">
                 <div
-                  className={`inline-flex p-3 rounded-lg bg-gradient-to-br ${card.color} text-white mb-4`}
+                  className={`inline-flex p-3 rounded-lg bg-linear-to-br ${card.color} text-white mb-4`}
                 >
                   {card.icon}
                 </div>
@@ -360,10 +401,10 @@ export default function DashboardPage() {
                   </span>
                   <div className="flex-1 min-w-0">
                     <p className="text-foreground truncate">
-                      <span className="font-semibold">
+                      <span className="font-semibold text-white">
                         @{activity.username}
                       </span>{" "}
-                      <span className="text-foreground/70">
+                      <span className="text-foreground/70 text-white">
                         {getActivityText(activity)}
                       </span>
                     </p>

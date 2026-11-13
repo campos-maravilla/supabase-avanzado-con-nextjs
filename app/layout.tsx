@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Suplatzigram",
+  title: "Blog de Supabase estilo Instagram",
   description: "App inspirada en Instagram - Curso de Supabase de Platzi",
 };
 

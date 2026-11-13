@@ -147,13 +147,15 @@ export default function Home() {
         .select("*")
         .order("created_at", { ascending: false });
 
-      await supabase.from("notifications").insert({
-        post_id: postsData.id, // ✅ ahora sí existe
-      });
-
-      if (postsError) {
+      if (postsError || !postsData) {
         console.error("Error al obtener los posts:", postsError);
         return;
+      }
+
+      if (postsData.length > 0) {
+        await supabase.from("notifications").insert({
+          post_id: postsData[0].id,
+        });
       }
 
       const postIds = postsData.map((p) => p.id);

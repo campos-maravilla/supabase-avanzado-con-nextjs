@@ -3,8 +3,15 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../lib/client";
 
+interface Notification {
+  id: number | string;
+  user_id: string;
+  created_at: string;
+  [key: string]: unknown;
+}
+
 export function NotificationBell() {
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<Notification[]>([]);
 
   const [userId, setUserId] = useState<string | null>(null);
 
@@ -48,7 +55,9 @@ export function NotificationBell() {
         (payload) => {
           console.log("Nueva notificación:", payload);
 
-          setNotifications((prev) => [payload.new, ...prev]);
+          const newNotification = payload.new as Notification;
+
+          setNotifications((prev) => [newNotification, ...prev]);
         },
       )
       .subscribe();

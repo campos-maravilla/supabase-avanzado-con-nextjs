@@ -8,9 +8,11 @@ import { Post } from "../types";
 import { supabase } from "../lib/client";
 import { HeartIcon } from "../components/HeartIcon";
 
-function Modal({ post, onClose }: { post: Post; onClose: () => void }) {
+type RankedPost = Post & { likes: number };
+
+function Modal({ post, onClose }: { post: RankedPost; onClose: () => void }) {
   const username = post.profile?.username || "default_user";
-  const avatarUrl = post.profile?.avatar || "/logo-academia.png";
+  const avatarUrl = post.profile?.avatar_url || "/logo-academia.png";
 
   return (
     <div
@@ -47,16 +49,14 @@ function Modal({ post, onClose }: { post: Post; onClose: () => void }) {
         <div className="flex items-center gap-3 p-4 border-b border-border">
           <div className="relative w-10 h-10 rounded-full overflow-hidden ring-2 ring-primary">
             <Image
-              src={post.user?.avatar || ""}
-              alt={post.user?.username || "default_user"}
+              src={avatarUrl}
+              alt={username}
               fill
               className="object-cover"
             />
           </div>
           <div className="flex flex-col">
-            <span className="font-semibold text-foreground">
-              {post.user?.username || "default_user"}
-            </span>
+            <span className="font-semibold text-foreground">{username}</span>
             <span className="text-xs text-foreground/50">
               {getTimeAgo(new Date(post.created_at))}
             </span>
@@ -67,7 +67,7 @@ function Modal({ post, onClose }: { post: Post; onClose: () => void }) {
         <div className="relative w-full aspect-square">
           <Image
             src={post.image_url}
-            alt={`Post de ${post.user?.username || "default_user"}`}
+            alt={`Post de ${username}`}
             fill
             className="object-cover"
           />
@@ -82,9 +82,7 @@ function Modal({ post, onClose }: { post: Post; onClose: () => void }) {
             </span>
           </div>
           <p className="mt-2 text-foreground">
-            <span className="font-semibold">
-              {post.user?.username || "default_user"}
-            </span>{" "}
+            <span className="font-semibold">{username}</span>{" "}
             <span className="text-foreground/80">{post.caption}</span>
           </p>
         </div>
@@ -94,9 +92,9 @@ function Modal({ post, onClose }: { post: Post; onClose: () => void }) {
 }
 
 export default function RankPage() {
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [selectedPost, setSelectedPost] = useState<RankedPost | null>(null);
 
-  const [posts, setPosts] = useState<Post[]>([]);
+  const [posts, setPosts] = useState<RankedPost[]>([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -110,7 +108,7 @@ export default function RankPage() {
         console.error("Error al obtener los posts:", error);
       } else {
         console.log("Posts obtenidos:", data);
-        setPosts(data);
+        setPosts(data.map((post) => ({ ...post, likes_count: post.likes })));
       }
     };
 
